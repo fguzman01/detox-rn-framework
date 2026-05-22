@@ -1,0 +1,28 @@
+{
+  "name": "detox-rn-framework",
+  "version": "1.0.0",
+  "description": "E2E testing framework for React Native using Detox.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fguzman01/detox-rn-framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/fguzman01/detox-rn-framework/issues"
+  },
+  "homepage": "https://github.com/fguzman01/detox-rn-framework#readme",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "detox": "^20.50.4",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "typescript": "^6.0.3"
+  }
+}
