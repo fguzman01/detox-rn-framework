@@ -4,7 +4,10 @@
   "description": "E2E testing framework for React Native using Detox.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:android": "npx detox test --configuration android.emu.debug --loglevel info",
+    "test:android:debug": "npx detox test --configuration android.emu.debug --loglevel verbose",
+    "test:smoke": "npx detox test --configuration android.emu.debug --testNamePattern='smoke'",
+    "build:android": "npx detox build --configuration android.emu.debug"
   },
   "repository": {
     "type": "git",

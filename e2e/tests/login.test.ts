@@ -1,8 +1,9 @@
 import { device } from 'detox';
-import LoginScreen from '../screens/LoginScreen';
-import credentials from '../data/credentials.json';
+import { expect as jestExpect } from '@jest/globals';
+import AuthFlow from '../flows/authFlow';
+import CredentialsProvider from '../data/CredentialsProvider';
 
-describe('Login - smoke', () => {
+describe('Login', () => {
 
   beforeAll(async () => {
     await device.launchApp();
@@ -10,23 +11,28 @@ describe('Login - smoke', () => {
 
   beforeEach(async () => {
     await device.reloadReactNative();
-    await LoginScreen.assertLoginFormVisible();
+  });
+
+  afterEach(async () => {
+    const testName = jestExpect.getState().currentTestName ?? 'unknown';
+    if (jestExpect.getState().assertionCalls === 0) {
+      await device.takeScreenshot(`FAILED_${testName}`);
+    }
   });
 
   it('login exitoso con credenciales válidas', async () => {
-    await LoginScreen.loginAs(
-      credentials.validUser.username,
-      credentials.validUser.password
-    );
-    await LoginScreen.assertSuccessVisible();
+    await AuthFlow.login(CredentialsProvider.validUser());
+    await AuthFlow.assertLoginSuccess();
   });
 
   it('login fallido con credenciales inválidas', async () => {
-    await LoginScreen.loginAs(
-      credentials.invalidUser.username,
-      credentials.invalidUser.password
-    );
-    await LoginScreen.assertErrorVisible();
+    await AuthFlow.login(CredentialsProvider.invalidUser());
+    await AuthFlow.assertLoginError();
+  });
+
+  it('login fallido con credenciales vacías', async () => {
+    await AuthFlow.login(CredentialsProvider.emptyUser());
+    await AuthFlow.assertLoginError();
   });
 
 });

@@ -15,6 +15,7 @@ module.exports = {
     'android.debug': {
       type: 'android.apk',
       binaryPath: process.env.APK_PATH,
+      testBinaryPath: process.env.TEST_APK_PATH,
     },
   },
   devices: {
