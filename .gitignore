@@ -3,3 +3,4 @@ e2e/reports/
 artifacts/
 *.apk
 .claude/
+.env

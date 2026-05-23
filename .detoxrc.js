@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 /** @type {Detox.DetoxConfig} */
 module.exports = {
   testRunner: {
@@ -12,14 +14,14 @@ module.exports = {
   apps: {
     'android.debug': {
       type: 'android.apk',
-      binaryPath: 'C:\\repos\\detox-demo\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk',
+      binaryPath: process.env.APK_PATH,
     },
   },
   devices: {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'Pixel_7_Pro',
+        avdName: process.env.AVD_NAME,
       },
     },
   },
