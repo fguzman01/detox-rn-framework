@@ -5,9 +5,14 @@
     "lib": ["ES2017"],
     "strict": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "outDir": "./dist",
     "rootDir": ".",
-    "types": ["jest", "detox"]
+    "baseUrl": ".",
+    "types": ["jest", "detox"],
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "e2e/**/*.ts"
