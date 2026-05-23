@@ -35,4 +35,9 @@ describe('Login', () => {
     await AuthFlow.assertLoginError();
   });
 
+  it('ciclo completo login y logout con usuario válido', async () => {
+    await AuthFlow.loginAndLogout(CredentialsProvider.validUser());
+    await AuthFlow.assertLoginFormVisible();
+  });
+
 });
