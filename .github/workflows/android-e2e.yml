@@ -26,6 +26,11 @@ jobs:
           java-version: 17
           distribution: temurin
 
+      - name: Install system libraries for Android emulator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0 libnss3 libxcomposite1 libxcursor1 libxi6 libxtst6
+
       - name: Checkout detox-demo app
         uses: actions/checkout@v4
         with:
