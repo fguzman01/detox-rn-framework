@@ -88,7 +88,7 @@ jobs:
         with:
           api-level: 31
           arch: x86_64
-          profile: Pixel_5
+          profile: pixel_5
           avd-name: Pixel_5_API_31
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
