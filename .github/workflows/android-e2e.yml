@@ -83,6 +83,7 @@ jobs:
           script: npm run test:android
         env:
           APK_PATH: ${{ github.workspace }}/detox-demo/android/app/build/outputs/apk/debug/app-debug.apk
+          TEST_APK_PATH: ${{ github.workspace }}/detox-demo/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
           AVD_NAME: Pixel_5_API_31
           DETOX_CONFIGURATION: android.emu.debug
 
