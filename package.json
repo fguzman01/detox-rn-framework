@@ -7,7 +7,8 @@
     "test:android": "npx detox test --configuration android.emu.debug --loglevel info",
     "test:android:debug": "npx detox test --configuration android.emu.debug --loglevel verbose",
     "test:smoke": "npx detox test --configuration android.emu.debug --testNamePattern='smoke'",
-    "build:android": "npx detox build --configuration android.emu.debug"
+    "build:android": "npx detox build --configuration android.emu.debug",
+    "test:lt": "npx detox test --configuration android.lt.debug --loglevel info --take-screenshots all"
   },
   "repository": {
     "type": "git",

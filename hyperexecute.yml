@@ -1,7 +1,4 @@
-version: 0.1
-globalTimeout: 90
-testSuiteTimeout: 90
-testSuiteStep: 90
+version: "0.2"
 
 runson: android
 
@@ -9,8 +6,16 @@ autosplit: false
 
 concurrency: 1
 
+globalTimeout: 90
+testSuiteTimeout: 90
+testSuiteStep: 90
+
 env:
   DETOX_CONFIGURATION: android.lt.debug
+  DETOX: true
+  isRealMobile: true
+  mobileDC: true
+  platformName: android
 
 pre:
   - npm install
@@ -18,9 +23,9 @@ pre:
 testDiscovery:
   type: raw
   mode: static
-  command: echo "e2e/tests/login.test.ts"
+  command: echo "test:lt"
 
-testRunnerCommand: npx detox test --configuration android.lt.debug --loglevel info --take-screenshots all
+testRunnerCommand: npm run $test
 
 uploadArtefacts:
   - name: detox-artifacts
@@ -31,8 +36,14 @@ uploadArtefacts:
       - e2e/reports/
 
 framework:
-  name: detox
-  version: 20.50.4
+  name: raw
   args:
-    appPath: detox-demo/android/app/build/outputs/apk/debug/app-debug.apk
-    testAppPath: detox-demo/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTes
+    buildName: detox-rn-framework
+    deviceLogs: true
+    video: true
+    devices:
+      - android:11
+    appId: lt://APP10160251981779720719258472
+    testAppId: lt://APP10160251981779720719258472
+
+jobLabel: ['detox', 'android', 'react-native']
