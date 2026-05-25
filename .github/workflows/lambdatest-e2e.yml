@@ -1,0 +1,96 @@
+name: LambdaTest E2E Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  e2e-lambdatest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout framework repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Checkout detox-demo app
+        uses: actions/checkout@v4
+        with:
+          repository: tjmaher/detox-demo
+          path: detox-demo
+
+      - name: Cache node_modules framework
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-framework-${{ hashFiles('package-lock.json') }}
+
+      - name: Cache node_modules detox-demo
+        uses: actions/cache@v4
+        with:
+          path: detox-demo/node_modules
+          key: ${{ runner.os }}-npm-demo-${{ hashFiles('detox-demo/package-lock.json') }}
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('detox-demo/android/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Install framework dependencies
+        run: npm install
+
+      - name: Install detox-demo dependencies
+        working-directory: detox-demo
+        run: npm install
+
+      - name: Build Android APK
+        working-directory: detox-demo
+        run: npx detox build --configuration android.emu.debug
+        env:
+          APK_PATH: ${{ github.workspace }}/detox-demo/android/app/build/outputs/apk/debug/app-debug.apk
+          TEST_APK_PATH: ${{ github.workspace }}/detox-demo/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          AVD_NAME: Pixel_5_API_31
+          DETOX_CONFIGURATION: android.emu.debug
+
+      - name: Download HyperExecute CLI
+        run: |
+          curl -O https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute
+          chmod +x hyperexecute
+
+      - name: Run tests on LambdaTest HyperExecute
+        run: |
+          ./hyperexecute \
+            --user ${{ secrets.LT_USERNAME }} \
+            --key ${{ secrets.LT_ACCESS_KEY }} \
+            --config hyperexecute.yml \
+            --download-artifacts \
+            --verbose
+        env:
+          APK_PATH: ${{ github.workspace }}/detox-demo/android/app/build/outputs/apk/debug/app-debug.apk
+          TEST_APK_PATH: ${{ github.workspace }}/detox-demo/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          DETOX_CONFIGURATION: android.lt.debug
+
+      - name: Upload artifacts to GitHub
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambdatest-artifacts-${{ github.run_number }}
+          path: |
+            artifacts/
+            e2e/reports/
+          retention-days: 7

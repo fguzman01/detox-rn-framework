@@ -1,0 +1,38 @@
+version: 0.1
+globalTimeout: 90
+testSuiteTimeout: 90
+testSuiteStep: 90
+
+runson: android
+
+autosplit: false
+
+concurrency: 1
+
+env:
+  DETOX_CONFIGURATION: android.lt.debug
+
+pre:
+  - npm install
+
+testDiscovery:
+  type: raw
+  mode: static
+  command: echo "e2e/tests/login.test.ts"
+
+testRunnerCommand: npx detox test --configuration android.lt.debug --loglevel info --take-screenshots all
+
+uploadArtefacts:
+  - name: detox-artifacts
+    path:
+      - artifacts/
+  - name: test-reports
+    path:
+      - e2e/reports/
+
+framework:
+  name: detox
+  version: 20.50.4
+  args:
+    appPath: detox-demo/android/app/build/outputs/apk/debug/app-debug.apk
+    testAppPath: detox-demo/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTes
