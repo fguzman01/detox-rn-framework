@@ -12,10 +12,6 @@ testSuiteStep: 90
 
 env:
   DETOX_CONFIGURATION: android.lt.debug
-  DETOX: true
-  isRealMobile: true
-  mobileDC: true
-  platformName: android
 
 pre:
   - npm install
@@ -39,6 +35,7 @@ framework:
   name: raw
   args:
     buildName: detox-rn-framework
+    platformName: android
     deviceLogs: true
     video: true
     devices:
